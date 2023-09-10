@@ -1,0 +1,59 @@
+package com.github.kothapet.scs.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsync;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsyncClientBuilder;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClientBuilder;
+import com.amazonaws.services.kinesis.AmazonKinesisAsync;
+import com.amazonaws.services.kinesis.AmazonKinesisAsyncClientBuilder;
+
+@Configuration
+@Profile("local")
+public class AwsConfigLocal {
+
+  @Value("${cloud.aws.region.static}")
+  private String region;
+
+  @Value("${cloud.aws.kinesis.endpoint}")
+  private String kinesisEndpoint;
+
+  @Value("${cloud.aws.dynamo-db.endpoint}")
+  private String dynamoDbEndpoint;
+
+  @Value("${cloud.aws.cloud-watch.endpoint}")
+  private String cloudWatchEndpoint;
+
+  @Bean
+  public AmazonKinesisAsync amazonKinesisAsync() {
+	System.out.println("**** amazonKinesisAsync ***");  
+    return AmazonKinesisAsyncClientBuilder.standard()
+        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(kinesisEndpoint, region))
+        .build();
+  }
+
+  @Bean
+  @Primary
+  public AmazonDynamoDBAsync amazonDynamoDbAsync() {
+		System.out.println("**** amazonDynamoDbAsync ***");  
+    return AmazonDynamoDBAsyncClientBuilder.standard()
+        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(dynamoDbEndpoint, region))
+        .build();
+  }
+
+  @Bean
+  public AmazonCloudWatchAsync amazonCloudWatchAsync() {
+		System.out.println("**** amazonCloudWatchAsync ***");  
+    return AmazonCloudWatchAsyncClientBuilder.standard()
+        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(cloudWatchEndpoint, region))
+        .build();
+  }
+
+}
+
