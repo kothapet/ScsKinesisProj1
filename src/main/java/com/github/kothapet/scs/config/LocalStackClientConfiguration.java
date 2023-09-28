@@ -50,7 +50,7 @@ public class LocalStackClientConfiguration {
 		System.out.println("getAWSSecretKey   : " + credentialsProvider.getCredentials().getAWSSecretKey());
 		return credentialsProvider;
 	}
-/*
+
 	@Bean
 	public AWSSecurityTokenServiceAsync aWSSecurityTokenServiceAsync() {
 		System.out.println("**** AWSSecurityTokenServiceAsync ***");
@@ -72,7 +72,6 @@ public class LocalStackClientConfiguration {
 				.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(cloudWatchEndpoint, region))
 				.build();
 	}
-*/
 
 	@Bean
 	public KinesisProducerConfiguration kinesisProducerConfiguration() throws URISyntaxException {
